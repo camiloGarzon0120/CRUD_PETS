@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { Modal } from 'react-bootstrap'
-import { isEmpty } from 'lodash'
+import { Modal, NavItem } from 'react-bootstrap'
+import { isEmpty, size } from 'lodash'
 import shortid from 'shortid'
 
 
@@ -21,6 +21,8 @@ function App() {
   const [ownerEmail, setOwnerEmail] = useState("")*/
 
   const [pets, setPets] = useState([])
+  const [editMode, setEditMode] = useState(false)
+  const [id, setId] = useState("")
 
   const addPet = (e) => {
     e.preventDefault()
@@ -49,6 +51,42 @@ function App() {
 
   }
 
+  const savePet = (e) => {
+    e.preventDefault()
+
+    if (isEmpty(petName)) {
+      console.log("registro vacio")
+      return
+    }
+
+    const editedPets = pets.map(item => item.id === id ? { id, petName: petName} : item)
+    setPets(editedPets)
+    setEditMode(false)
+    setPetName("")
+    setId("")
+    /*setPetType("")
+    setPetBreed("")
+    setPetDate("")
+    setOwnerName("")
+    setOwnerPhone("")
+    setOwnerAddress("")
+    setOwnerEmail("")*/
+
+  }
+
+  const deletePet = (id) => {
+    const filterdPets = pets.filter(pet => pet.id !== id)
+    setPets(filterdPets)
+  }
+
+  const editPet = (thePet) => {
+    handleShow()
+    setPetName(thePet.petName)
+    setEditMode(true)
+    setId(thePet.id)
+  }
+
+
   return (
     <div className="container mt-5">
       <div className="row">
@@ -62,29 +100,53 @@ function App() {
       <hr/>
       <div className="row">
         <div className="col">
-          <ul className="list-group">
-            {
-              pets.map((pet) => (
-                <li className="list-group-item list-group-item-action" key={pet.id}>
-                    <button className="btn btn-danger btn-sm float-right mx-2">Eliminar</button>
-                    <button className="btn btn-warning btn-sm float-right">Editar</button>
-                    <h5 className="mb-1">{pet.petName}</h5>
+          {
+            size(pets) === 0 ? (
+              <ul className="list-group">
+                <li className="list-group-item list-group-item-action" >
+                    <h5 className="mb-1">No hay mascota</h5>
                     <p className="mb-1">Some placeholder content in a paragraph.</p>
                     <small>And some small print.</small>
                 </li>
-              ))
-            }
-          </ul>  
+              </ul>  
+            ) : (
+              <ul className="list-group">
+                {
+                  pets.map((pet) => (
+                    <li className="list-group-item list-group-item-action" key={pet.id}>
+                        <button 
+                          className="btn btn-danger btn-sm float-right mx-2"
+                          onClick={() => deletePet(pet.id)}
+                        >
+                          Eliminar
+                        </button>
+                        <button 
+                          className="btn btn-warning btn-sm float-right"
+                          onClick={() => editPet(pet)}
+                        >
+                          Editar
+                        </button>
+                        <h5 className="mb-1">{pet.petName}</h5>
+                        <p className="mb-1">Some placeholder content in a paragraph.</p>
+                        <small>And some small print.</small>
+                    </li>
+                  ))
+                }
+              </ul>  
+            )
+          }
         </div>
       </div>
 
-      //Start Modal
+      {/* Start Modal Form */}
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Registro</Modal.Title>
+          <Modal.Title>
+            { editMode ? "Registro" : "Actualizar"}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <form onSubmit={addPet}>
+          <form onSubmit={ editMode ? savePet : addPet }>
             <p><strong>Datos de la mascota</strong></p>
             <div className="form-row">
               <div className="form-group col-md-6">
@@ -188,15 +250,15 @@ function App() {
             </div>
             <hr/>
             <button 
-              className="btn btn-dark btn-block" 
+              className={ editMode ? "btn btn-warning btn-block" : "btn btn-dark btn-block" }
               type="submit"
             >
-              Agregar mascota
+              { editMode ? "Guardar" : "Agregar mascota"}
             </button>
           </form>
         </Modal.Body>
       </Modal>
-      //End Modal
+      {/* End Modal Form */}
 
     </div>
   );
