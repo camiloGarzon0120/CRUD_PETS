@@ -4,6 +4,10 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Available Scripts
 
+Para instalar las dependencias de un proyecto (cuando has hecho cambios al package.json o has descargado un nuevo proyecto):
+
+## yarn install
+
 In the project directory, you can run:
 
 ### `yarn start`
