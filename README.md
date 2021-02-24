@@ -6,7 +6,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 Para instalar las dependencias de un proyecto (cuando has hecho cambios al package.json o has descargado un nuevo proyecto):
 
-## yarn install
+## `yarn install`
 
 In the project directory, you can run:
 
