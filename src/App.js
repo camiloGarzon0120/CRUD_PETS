@@ -13,7 +13,11 @@ function App() {
 
   //Modal function
   const [show, setShow] = useState(false)
-  const handleCloseRegisterModal = () => setShow(false)
+  const handleCloseRegisterModal = () => {
+    setEditMode(false)
+    cleanFields()
+    setShow(false)
+  } 
   const handleShowRegisterModal = () => setShow(true)
 
   const [showConfirmDelete, setShowConfirmDelete] = useState(false)
@@ -50,21 +54,14 @@ function App() {
   //Add pet to database
   const addPet = async(e) => {
     e.preventDefault()
+    setEditMode(false)
     const result = await addDocument("pets", { petName, petType, petBreed, petDate, ownerName, ownerPhone, ownerAddress, ownerEmail })
     if (!result.statusResponse) {
       console.log(result.error)
       return
     }
     setPets([ ...pets, { id: result.data.id, petName, petType, petBreed, petDate, ownerName, ownerPhone, ownerAddress, ownerEmail} ])
-
-    setPetName("")
-    setPetType("")
-    setPetBreed("")
-    setPetDate("")
-    setOwnerName("")
-    setOwnerPhone("")
-    setOwnerAddress("")
-    setOwnerEmail("")
+    cleanFields()
     handleCloseRegisterModal()
   }
 
@@ -77,18 +74,9 @@ function App() {
       return
     }
     const editedPets = pets.map(item => item.id === id ? { id, petName, petType, petBreed, petDate, ownerName, ownerPhone, ownerAddress, ownerEmail} : item)
-    
     setPets(editedPets)
     setEditMode(false)
-    setPetName("")
-    setId("")
-    setPetType("")
-    setPetBreed("")
-    setPetDate("")
-    setOwnerName("")
-    setOwnerPhone("")
-    setOwnerAddress("")
-    setOwnerEmail("")
+    cleanFields()
     handleCloseRegisterModal()
   }
 
@@ -117,6 +105,18 @@ function App() {
     setOwnerAddress(thePet.ownerAddress)
     setOwnerEmail(thePet.ownerEmail)
     setEditMode(true)
+  }
+
+  //Clean fields
+  const cleanFields = () => {
+    setPetName("")
+    setPetType("")
+    setPetBreed("")
+    setPetDate("")
+    setOwnerName("")
+    setOwnerPhone("")
+    setOwnerAddress("")
+    setOwnerEmail("")
   }
 
   return (
@@ -203,7 +203,12 @@ function App() {
         </div>
 
         {/* Start Modal Form */}
-        <Modal show={show} onHide={handleCloseRegisterModal}>
+        <Modal 
+          show={show}
+          onHide={handleCloseRegisterModal}
+          backdrop="static"
+          keyboard={false}
+        >
           <Modal.Header closeButton>
             <Modal.Title>
               { editMode ? "Actualizar" : "Registro"}
