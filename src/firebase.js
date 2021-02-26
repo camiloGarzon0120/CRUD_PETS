@@ -2,12 +2,12 @@ import firebase from 'firebase/app'
 import 'firebase/firestore'
 
 const firebaseConfig = {
-    apiKey: "AIzaSyCUYpTdrHzK7uzaynTMMogmUmGm8oEFGt8",
-    authDomain: "vetclinic-bd32b.firebaseapp.com",
-    projectId: "vetclinic-bd32b",
-    storageBucket: "vetclinic-bd32b.appspot.com",
-    messagingSenderId: "1053074187414",
-    appId: "1:1053074187414:web:748aaa9437b664e0b54eb7"
-}
+    apiKey: "AIzaSyAxeUNSAjfYxSWcvmZD1FD7gIZOxPVBAWk",
+    authDomain: "vetclinic-5e156.firebaseapp.com",
+    projectId: "vetclinic-5e156",
+    storageBucket: "vetclinic-5e156.appspot.com",
+    messagingSenderId: "768358731336",
+    appId: "1:768358731336:web:3a749d99e604c2d3cf127d"
+  };
 
 export const firebaseApp = firebase.initializeApp(firebaseConfig)
